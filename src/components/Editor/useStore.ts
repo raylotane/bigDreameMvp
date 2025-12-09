@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type IObject, type IBaseShape, ETool, type IShape } from "../types";
+import { type IObject, type IBaseShape, ETool, type IShape, type IFrame } from "../types";
 import { v4 as uuidv4 } from 'uuid';
 import { useLocalStorageState } from 'ahooks';
 
@@ -126,6 +126,14 @@ const useStore = () => {
         }
     }
 
+    // 更新整个帧
+    const updateFrame = (frameIndex: number, frame: IFrame) => {
+        if (!frames[frameIndex]) return;
+        
+        frames[frameIndex] = frame;
+        setFrames([...frames]);
+    }
+
     return {
         selectTool,
         setSelectTool,
@@ -144,6 +152,7 @@ const useStore = () => {
         addObject,
         updateObject,
         deleteObject,
+        updateFrame,
 
         fillColor,
         setFillColor,

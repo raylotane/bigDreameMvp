@@ -2,8 +2,18 @@ import React, { useEffect, useMemo, useState } from "react";
 import Toolbar from "../Toolbar";
 import Canvas from "../Canvas";
 import Timeline from "../Timeline";
-import { Divider, Drawer, Form, InputNumber, Button, ColorPicker, Space } from "antd";
+import {
+  Divider,
+  Drawer,
+  Form,
+  InputNumber,
+  Button,
+  ColorPicker,
+  Space,
+  Splitter,
+} from "antd";
 import useStore from "./useStore";
+import LeftPan from "../RightPan";
 
 const Editor: React.FC = () => {
   const {
@@ -24,6 +34,7 @@ const Editor: React.FC = () => {
     addObject,
     updateObject,
     deleteObject,
+    updateFrame,
 
     fillColor,
     setFillColor,
@@ -47,8 +58,6 @@ const Editor: React.FC = () => {
 
     return frame?.objects;
   }, [currentFrameIndex]);
-
-  console.log(currentFrameObjects);
 
   useEffect(() => {
     let interval = null;
@@ -78,25 +87,45 @@ const Editor: React.FC = () => {
       />
       <Divider size="small" />
 
-      <Canvas
-        selectTool={selectTool}
-        setSelectTool={setSelectTool}
-        frames={frames}
-        currentFrameIndex={currentFrameIndex}
-        isDrawing={isDrawing}
-        setIsDrawing={setIsDrawing}
-        startPos={startPos}
-        setStartPos={setStartPos}
-        currentShape={currentShape}
-        setCurrentShape={setCurrentShape}
-        addObject={addObject}
-        fillColor={fillColor}
-        strokeColor={strokeColor}
-        onionSkin={onionSkin}
-        setOnionSkin={setOnionSkin}
-        selectedObject={selectedObject}
-        setSelectedObject={setSelectedObject}
-      />
+      <Splitter
+        style={{ height: "100%", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
+      >
+        <Splitter.Panel defaultSize="70%" min="50%" max="70%">
+          {/* 画布 */}
+          <Canvas
+            selectTool={selectTool}
+            setSelectTool={setSelectTool}
+            frames={frames}
+            currentFrameIndex={currentFrameIndex}
+            isDrawing={isDrawing}
+            setIsDrawing={setIsDrawing}
+            startPos={startPos}
+            setStartPos={setStartPos}
+            currentShape={currentShape}
+            setCurrentShape={setCurrentShape}
+            addObject={addObject}
+            fillColor={fillColor}
+            strokeColor={strokeColor}
+            onionSkin={onionSkin}
+            setOnionSkin={setOnionSkin}
+            selectedObject={selectedObject}
+            setSelectedObject={setSelectedObject}
+          />
+        </Splitter.Panel>
+        <Splitter.Panel>
+          {/* 右侧面板 */}
+          <LeftPan
+            frames={frames}
+            currentFrameIndex={currentFrameIndex}
+            selectedObject={selectedObject}
+            setSelectedObject={setSelectedObject}
+            updateObject={updateObject}
+            deleteObject={deleteObject}
+            updateFrame={updateFrame}
+          />
+        </Splitter.Panel>
+      </Splitter>
+
       <Divider size="small" />
 
       <Timeline
@@ -105,218 +134,6 @@ const Editor: React.FC = () => {
         frames={frames}
         addFrame={addFrame}
       />
-
-      <Drawer
-        title={selectedObject ? "编辑图形" : "对象列表"}
-        closable={{ "aria-label": "Close Button" }}
-        onClose={() => {
-          setOpenObjectList(false);
-        }}
-        open={openObjectList}
-        size="large"
-      >
-        {selectedObject ? (
-          <Form layout="vertical">
-            <Form.Item label="图形ID">
-              <span>{selectedObject.id}</span>
-            </Form.Item>
-            <Form.Item label="图形类型">
-              <span>{selectedObject.type}</span>
-            </Form.Item>
-            
-            {selectedObject.type === "line" && (
-              <>
-                <Form.Item label="线条颜色">
-                  <ColorPicker 
-                    value={selectedObject.stroke || "#000"}
-                    onChange={(color) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        stroke: color.toHexString()
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="线条宽度">
-                  <InputNumber 
-                    value={selectedObject.strokeWidth || 1} 
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        strokeWidth: value || 1
-                      });
-                    }}
-                  />
-                </Form.Item>
-              </>
-            )}
-            
-            {selectedObject.type === "rect" && (
-              <>
-                <Form.Item label="X坐标">
-                  <InputNumber 
-                    value={selectedObject.x || 0} 
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        x: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="Y坐标">
-                  <InputNumber 
-                    value={selectedObject.y || 0}
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        y: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="宽度">
-                  <InputNumber 
-                    value={selectedObject.width || 0}
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        width: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="高度">
-                  <InputNumber 
-                    value={selectedObject.height || 0}
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        height: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="填充颜色">
-                  <ColorPicker 
-                    value={selectedObject.fill || "transparent"}
-                    onChange={(color) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        fill: color.toHexString()
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="边框颜色">
-                  <ColorPicker 
-                    value={selectedObject.stroke || "#000"}
-                    onChange={(color) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        stroke: color.toHexString()
-                      });
-                    }}
-                  />
-                </Form.Item>
-              </>
-            )}
-            
-            {selectedObject.type === "circle" && (
-              <>
-                <Form.Item label="X坐标（圆心）">
-                  <InputNumber 
-                    value={selectedObject.x || 0}
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        x: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="Y坐标（圆心）">
-                  <InputNumber 
-                    value={selectedObject.y || 0}
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        y: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="半径">
-                  <InputNumber 
-                    value={selectedObject.radius || 0}
-                    min={0}
-                    onChange={(value) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        radius: value || 0
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="填充颜色">
-                  <ColorPicker 
-                    value={selectedObject.fill || "transparent"}
-                    onChange={(color) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        fill: color.toHexString()
-                      });
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label="边框颜色">
-                  <ColorPicker 
-                    value={selectedObject.stroke || "#000"}
-                    onChange={(color) => {
-                      updateObject(currentFrameIndex, selectedObject.id, {
-                        stroke: color.toHexString()
-                      });
-                    }}
-                  />
-                </Form.Item>
-              </>
-            )}
-            
-            <Space style={{ marginTop: 16 }}>
-              <Button 
-                onClick={() => setSelectedObject(null)}
-              >
-                返回对象列表
-              </Button>
-              <Button 
-                danger
-                onClick={() => {
-                  deleteObject(currentFrameIndex, selectedObject.id);
-                }}
-              >
-                删除图形
-              </Button>
-            </Space>
-          </Form>
-        ) : (
-          <div>
-            {currentFrameObjects.map((item) => (
-              <div 
-                key={item.id} 
-                style={{ 
-                  padding: 12, 
-                  border: '1px solid #d9d9d9', 
-                  borderRadius: 4, 
-                  marginBottom: 8,
-                  cursor: 'pointer'
-                }}
-                onClick={() => setSelectedObject(item)}
-              >
-                <div><strong>类型:</strong> {item.type}</div>
-                <div><strong>ID:</strong> {item.id}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </Drawer>
-
-      <div>
-        <p
-          onClick={() => {
-            setOpenObjectList(true);
-          }}
-        >
-          展开
-        </p>
-      </div>
     </div>
   );
 };

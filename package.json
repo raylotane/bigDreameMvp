@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
+    "@monaco-editor/react": "^4.7.0",
     "@tailwindcss/vite": "^4.1.17",
     "ahooks": "^3.9.6",
     "antd": "^6.0.1",
     "classnames": "^2.5.1",
     "konva": "^10.0.12",
+    "monaco-editor": "^0.55.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-konva": "^19.2.1",

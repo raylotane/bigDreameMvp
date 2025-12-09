@@ -1,7 +1,13 @@
 import React, { useRef } from "react";
 import { useSize } from "ahooks";
 import { Stage, Layer, Rect, Circle, Line } from "react-konva";
-import { type ICommonProps, type IFrame, ETool, type IShape, type IObject } from "./types";
+import {
+  type ICommonProps,
+  type IFrame,
+  ETool,
+  type IShape,
+  type IObject,
+} from "./types";
 
 export interface CanvasProps extends ICommonProps {
   currentFrameIndex: number;
@@ -115,6 +121,8 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
     if (!isDrawing) return;
     const pos = e.target.getStage().getPointerPosition();
     if (currentTool === ETool.LINE) {
+      // console.log("handleMouseMove", currentShape?.points);
+      if (!currentShape?.points) return;
       const newShape = {
         ...currentShape,
         points: [...currentShape?.points!, pos.x, pos.y] as number[],
@@ -151,11 +159,18 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
       }
 
       const { type, width, height } = currentShape;
-
-      if (type === ETool.RECT && width === 0 && height === 0) {
+      console.log("currentShape", currentShape);
+      if (
+        (type === ETool.RECT && width === 0 && height === 0) ||
+        (type === ETool.CIRCLE &&
+          currentShape.radius === 0 &&
+          currentShape.radius === undefined) ||
+        (type === ETool.LINE && currentShape?.points!.length < 4)
+      ) {
         setCurrentShape(null);
         return;
       }
+
       addObject(currentFrameIndex, currentShape);
       setCurrentShape(null);
     }
@@ -169,9 +184,9 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
     opacity = 1,
     isOnion = false
   ) => {
-    const props = { 
-      key, 
-      opacity, 
+    const props = {
+      key,
+      opacity,
       id: obj.id, // 设置 id 为 attrs.id
       onClick: () => {
         if (!isOnion) {
@@ -182,9 +197,9 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
         if (!isOnion) {
           setSelectedObject(obj);
         }
-      }
+      },
     };
-    
+
     if (obj.type === "line") {
       return (
         <Line
@@ -194,7 +209,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
           strokeWidth={obj.strokeWidth}
           tension={0.5}
           lineCap="round"
-          draggable
+          // draggable
         />
       );
     } else if (obj.type === "rect") {
@@ -254,7 +269,11 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
           <Layer>
             {currentFrame?.objects.map((obj, i) => renderObject(obj, i))}
 
-            {currentShape && renderObject({ ...currentShape, id: "preview" } as IObject, "preview")}
+            {currentShape &&
+              renderObject(
+                { ...currentShape, id: "preview" } as IObject,
+                "preview"
+              )}
             {/* {currentShape && renderObject(currentShape, "preview")} */}
 
             {/* <Text text="Try to drag shapes" fontSize={15} />
