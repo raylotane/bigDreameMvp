@@ -18,7 +18,7 @@ export interface LeftPanProps {
   updateFrame?: (frameIndex: number, frame: IFrame) => void;
 }
 
-const LeftPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
+const RightPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
   const {
     frames,
     currentFrameIndex,
@@ -54,8 +54,8 @@ const LeftPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
       key: "2",
       label: "代码编辑器",
       children: (
-        <CodeEditor 
-          width={"100%"} 
+        <CodeEditor
+          width={"100%"}
           currentFrame={currentFrame}
           updateFrame={updateFrame}
           currentFrameIndex={currentFrameIndex}
@@ -69,10 +69,16 @@ const LeftPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
     },
   ];
   return (
-    <div className="bg-white h-full p-2">
+    <div
+      className="bg-white p-2"
+      style={{
+        height: "80vh",
+        overflowY: 'scroll',
+      }}
+    >
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
     </div>
   );
 };
 
-export default LeftPan;
+export default RightPan;

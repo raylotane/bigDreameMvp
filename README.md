@@ -20,3 +20,9 @@ npm run dev
 - CSS: TailwindCSS less
 - UI 组件库: Ant Design
 - 绘图工具: react-konva
+
+
+# web
+- ant desigin https://ant.design/index-cn/
+- hooks https://ahooks.js.org/
+- TailwindCSS https://tailwindcss.com/docs/installation
