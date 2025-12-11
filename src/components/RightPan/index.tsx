@@ -3,6 +3,7 @@ import React from "react";
 import type { IFrame, IObject } from "../types";
 import LayoutMan from "./LayoutMan";
 import CodeEditor from "./CodeEditor";
+import ChatPan from "./ChatPan";
 
 export interface LeftPanProps {
   frames: IFrame[];
@@ -27,6 +28,7 @@ const RightPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
     updateObject,
     deleteObject,
     updateFrame,
+    // addFrame,
   } = props;
 
   const currentFrame = frames[currentFrameIndex];
@@ -65,7 +67,7 @@ const RightPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
     {
       key: "3",
       label: "AI Agent",
-      children: "Content of Tab Pane 3",
+      children: <ChatPan addFrame={addFrame}/>,
     },
   ];
   return (
@@ -73,10 +75,10 @@ const RightPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
       className="bg-white p-2"
       style={{
         height: "80vh",
-        overflowY: 'scroll',
+        overflowY: "scroll",
       }}
     >
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Tabs defaultActiveKey="3" items={items} onChange={onChange} />
     </div>
   );
 };

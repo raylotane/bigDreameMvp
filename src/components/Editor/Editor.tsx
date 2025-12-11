@@ -122,6 +122,7 @@ const Editor: React.FC = () => {
             updateObject={updateObject}
             deleteObject={deleteObject}
             updateFrame={updateFrame}
+            // addFrame={addFrame}
           />
         </Splitter.Panel>
       </Splitter>
