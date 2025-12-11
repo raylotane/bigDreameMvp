@@ -17,12 +17,8 @@ npm run dev
 ## 技术栈
 
 - 框架: React
-- CSS: TailwindCSS less
-- UI 组件库: Ant Design
+- hooks: [ahooks](https://ahooks.js.org/)
+- CSS: [TailwindCSS](https://tailwindcss.com/docs/installation) less
+- UI 组件库: [Ant Design](https://ant.design/index-cn/)
 - 绘图工具: react-konva
-
-
-# web
-- ant desigin https://ant.design/index-cn/
-- hooks https://ahooks.js.org/
-- TailwindCSS https://tailwindcss.com/docs/installation
+- 类似项目：[wickeditor](https://www.wickeditor.com/#/)
