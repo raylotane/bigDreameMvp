@@ -13,7 +13,7 @@ import { Button, Flex, Tooltip } from "antd";
 import React from "react";
 
 export interface IChatPanProps {
-  addFrame: () => void;
+  //addFrame: () => void;
 }
 
 const role: BubbleListProps["role"] = {

@@ -67,7 +67,7 @@ const RightPan: React.FC<LeftPanProps> = (props: LeftPanProps) => {
     {
       key: "3",
       label: "AI Agent",
-      children: <ChatPan addFrame={addFrame}/>,
+      children: <ChatPan />,
     },
   ];
   return (
