@@ -1,5 +1,14 @@
-import React, { useEffect } from "react";
-import { List, Button, Form, InputNumber, ColorPicker, Space } from "antd";
+import React from "react";
+import {
+  List,
+  Button,
+  Form,
+  InputNumber,
+  ColorPicker,
+  Space,
+  Select,
+  Flex,
+} from "antd";
 import type { IFrame, IObject, ETool } from "../types";
 
 interface LayoutManProps {
@@ -24,7 +33,7 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
     deleteObject,
     currentFrameIndex,
   } = props;
-
+  
   const handleObjectClick = (object: IObject) => {
     setSelectedObject?.(object);
   };
@@ -46,16 +55,30 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
     setSelectedObject?.(null);
   };
 
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
   // 如果有选中的对象，显示编辑表单
   if (selectedObject) {
     return (
       <div className="p-4">
         <Form layout="vertical">
-          <Form.Item label="图形ID">
+          {/* <Form.Item label="图形ID">
             <span>{selectedObject.id}</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="图形类型">
-            <span>{selectedObject.type}</span>
+            {/* <span>{selectedObject.type}</span> */}
+            <Select
+              disabled
+              defaultValue={selectedObject.type}
+              onChange={handleChange}
+              options={[
+                { value: "line", label: "线条" },
+                { value: "rect", label: "矩形" },
+                { value: "circle", label: "圆形" },
+              ]}
+            />
           </Form.Item>
 
           {selectedObject.type === "line" && (
@@ -85,26 +108,30 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
 
           {selectedObject.type === "rect" && (
             <>
-              <Form.Item label="X坐标">
-                <InputNumber
-                  value={selectedObject.x || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      x: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="Y坐标">
-                <InputNumber
-                  value={selectedObject.y || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      y: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
+              <Flex>
+                <Form.Item label="X坐标">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.x || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        x: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="Y坐标">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.y || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        y: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
+              </Flex>
               <Form.Item label="宽度">
                 <InputNumber
                   value={selectedObject.width || 0}
