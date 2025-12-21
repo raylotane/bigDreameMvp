@@ -1,5 +1,15 @@
-import React, { useEffect } from "react";
-import { List, Button, Form, InputNumber, ColorPicker, Space } from "antd";
+import React from "react";
+import {
+  List,
+  Button,
+  Form,
+  InputNumber,
+  ColorPicker,
+  Space,
+  Select,
+  Flex,
+  Divider,
+} from "antd";
 import type { IFrame, IObject, ETool } from "../types";
 
 interface LayoutManProps {
@@ -24,7 +34,7 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
     deleteObject,
     currentFrameIndex,
   } = props;
-
+  
   const handleObjectClick = (object: IObject) => {
     setSelectedObject?.(object);
   };
@@ -46,20 +56,61 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
     setSelectedObject?.(null);
   };
 
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
   // 如果有选中的对象，显示编辑表单
   if (selectedObject) {
     return (
       <div className="p-4">
         <Form layout="vertical">
-          <Form.Item label="图形ID">
+          {/* <Form.Item label="图形ID">
             <span>{selectedObject.id}</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="图形类型">
-            <span>{selectedObject.type}</span>
+            {/* <span>{selectedObject.type}</span> */}
+            <Select
+              disabled
+              defaultValue={selectedObject.type}
+              onChange={handleChange}
+              options={[
+                { value: "line", label: "线条" },
+                { value: "rect", label: "矩形" },
+                { value: "circle", label: "圆形" },
+              ]}
+            />
           </Form.Item>
 
           {selectedObject.type === "line" && (
             <>
+            <Flex>
+            <Form.Item label="线条宽度">
+                <InputNumber
+                style={{ width: "90%" }}
+                  value={selectedObject.strokeWidth || 1}
+                  onChange={(value) => {
+                    handleUpdateObject(selectedObject.id, {
+                      strokeWidth: value || 1,
+                    });
+                  }}
+                />
+              </Form.Item>
+
+              <Form.Item label="线条样式"> 
+                <Select
+                  style={{ width: "90%" }}
+                  defaultValue={selectedObject.strokeDasharray || "none"}
+                  onChange={handleChange}
+                  options={[
+                    { value: "none", label: "实线" },
+                    { value: "5,5", label: "虚线" },
+                  ]}
+                />
+              </Form.Item>
+            </Flex>
+
+
               <Form.Item label="线条颜色">
                 <ColorPicker
                   value={selectedObject.stroke || "#000"}
@@ -70,43 +121,41 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="线条宽度">
-                <InputNumber
-                  value={selectedObject.strokeWidth || 1}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      strokeWidth: value || 1,
-                    });
-                  }}
-                />
-              </Form.Item>
+              
             </>
           )}
 
           {selectedObject.type === "rect" && (
             <>
-              <Form.Item label="X坐标">
-                <InputNumber
-                  value={selectedObject.x || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      x: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="Y坐标">
-                <InputNumber
-                  value={selectedObject.y || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      y: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
+              <Flex>
+                <Form.Item label="X坐标">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.x || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        x: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="Y坐标">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.y || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        y: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
+              </Flex>
+              <Flex> 
+              
               <Form.Item label="宽度">
                 <InputNumber
+                  style={{ width: "90%" }}
                   value={selectedObject.width || 0}
                   onChange={(value) => {
                     handleUpdateObject(selectedObject.id, {
@@ -117,6 +166,7 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
               </Form.Item>
               <Form.Item label="高度">
                 <InputNumber
+                  style={{ width: "90%" }}
                   value={selectedObject.height || 0}
                   onChange={(value) => {
                     handleUpdateObject(selectedObject.id, {
@@ -125,6 +175,9 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+              </Flex>
+
+              <Flex>
               <Form.Item label="填充颜色">
                 <ColorPicker
                   value={selectedObject.fill || "transparent"}
@@ -135,6 +188,7 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+              
               <Form.Item label="边框颜色">
                 <ColorPicker
                   value={selectedObject.stroke || "#000"}
@@ -145,13 +199,17 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+              </Flex>
+              
             </>
           )}
 
           {selectedObject.type === "circle" && (
             <>
+            <Flex> 
               <Form.Item label="X坐标（圆心）">
                 <InputNumber
+                  style={{ width: "90%" }}
                   value={selectedObject.x || 0}
                   onChange={(value) => {
                     handleUpdateObject(selectedObject.id, {
@@ -162,6 +220,7 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
               </Form.Item>
               <Form.Item label="Y坐标（圆心）">
                 <InputNumber
+                  style={{ width: "90%" }}
                   value={selectedObject.y || 0}
                   onChange={(value) => {
                     handleUpdateObject(selectedObject.id, {
@@ -170,6 +229,8 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+              </Flex>
+
               <Form.Item label="半径">
                 <InputNumber
                   value={selectedObject.radius || 0}
@@ -181,6 +242,8 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+
+              <Flex>
               <Form.Item label="填充颜色">
                 <ColorPicker
                   value={selectedObject.fill || "transparent"}
@@ -201,17 +264,21 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+            </Flex>
             </>
           )}
 
-          <Space style={{ marginTop: 16 }}>
-            <Button onClick={handleBackToList}>返回对象列表</Button>
+          <Divider/>
+          <Space style={{width: "100%",justifyContent: "space-between"}}>
+            <Button onClick={handleBackToList} >返回对象列表</Button>
             <Button
               danger
               onClick={() => handleDeleteObject(selectedObject.id)}
+              
             >
               删除图形
             </Button>
+
           </Space>
         </Form>
       </div>
