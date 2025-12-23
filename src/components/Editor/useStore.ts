@@ -107,6 +107,7 @@ const useStore = () => {
         if (objectIndex === -1) return;
 
         frame.objects[objectIndex] = { ...frame.objects[objectIndex], ...updates };
+
         setFrames([...frames]);
 
         // 如果更新的是当前选中的对象，同时更新选中状态

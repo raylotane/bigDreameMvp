@@ -13,7 +13,7 @@ import {
   Splitter,
 } from "antd";
 import useStore from "./useStore";
-import LeftPan from "../RightPan";
+import RightPan from "../RightPan";
 
 const Editor: React.FC = () => {
   const {
@@ -120,7 +120,7 @@ const Editor: React.FC = () => {
         </Splitter.Panel>
         <Splitter.Panel>
           {/* 右侧面板 */}
-          <LeftPan
+          <RightPan
             frames={frames}
             currentFrameIndex={currentFrameIndex}
             selectedObject={selectedObject}
@@ -128,6 +128,7 @@ const Editor: React.FC = () => {
             updateObject={updateObject}
             deleteObject={deleteObject}
             updateFrame={updateFrame}
+            // addFrame={addFrame}
           />
         </Splitter.Panel>
       </Splitter>
