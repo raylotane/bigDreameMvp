@@ -1,4 +1,4 @@
-import { Button, ColorPicker, Radio, Space, Switch } from "antd";
+import { ColorPicker, Radio, Space, Switch, InputNumber } from "antd";
 import React from "react";
 import { ETool, type ICommonProps } from "./types";
 
@@ -9,6 +9,8 @@ interface ToolbarProps extends ICommonProps {
   setStrokeColor: (color: string) => void;
   onionSkin: boolean;
   setOnionSkin: (onionSkin: boolean) => void;
+  strokeWidth: number;
+  setStrokeWidth: (width: number) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
 }
@@ -21,6 +23,8 @@ const Toolbar: React.FC<ToolbarProps> = (props: ToolbarProps) => {
     setFillColor,
     strokeColor,
     setStrokeColor,
+    strokeWidth,
+    setStrokeWidth,
     onionSkin,
     setOnionSkin,
     setIsPlaying,
@@ -60,6 +64,17 @@ const Toolbar: React.FC<ToolbarProps> = (props: ToolbarProps) => {
               }}
             ></div>
           </ColorPicker>
+          <InputNumber
+            min={1}
+            max={100}
+            defaultValue={strokeWidth}
+            onChange={(c) => {
+              if (typeof c === 'number') {
+                setStrokeWidth(c);
+              }
+            }}
+            changeOnWheel
+          />
         </Space>
         <Switch value={onionSkin} onChange={setOnionSkin} />
         <Switch value={isPlaying} onChange={setIsPlaying} />

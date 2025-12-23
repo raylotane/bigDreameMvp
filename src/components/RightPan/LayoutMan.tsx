@@ -145,6 +145,16 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
+              <Form.Item label="边框宽度">
+                <InputNumber
+                  value={selectedObject.strokeWidth || 1}
+                  onChange={(value) => {
+                    handleUpdateObject(selectedObject.id, {
+                      strokeWidth: value || 1,
+                    });
+                  }}
+                />
+              </Form.Item>
             </>
           )}
 
@@ -197,6 +207,16 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   onChange={(color) => {
                     handleUpdateObject(selectedObject.id, {
                       stroke: color.toHexString(),
+                    });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="边框宽度">
+                <InputNumber
+                  value={selectedObject.strokeWidth || 1}
+                  onChange={(value) => {
+                    handleUpdateObject(selectedObject.id, {
+                      strokeWidth: value || 1,
                     });
                   }}
                 />
