@@ -21,6 +21,8 @@ export interface CanvasProps extends ICommonProps {
   addObject: (currentFrameIndex: number, obj: IShape) => void;
   fillColor: string;
   strokeColor: string;
+  strokeWidth: number;
+  setStrokeWidth: (width: number) => void;
   onionSkin: boolean;
   setOnionSkin: (onionSkin: boolean) => void;
   selectedObject: IObject | null;
@@ -41,6 +43,8 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
     addObject,
     fillColor,
     strokeColor,
+    strokeWidth,
+    setStrokeWidth,
     onionSkin,
     setOnionSkin,
     selectedObject,
@@ -60,6 +64,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
       ? frames[currentFrameIndex + 1]
       : null;
 
+  // 计算高度，保持16:9比例
   const calaHeight = (width?: number) => {
     if (!width) return 0;
     let height = 1080;
@@ -69,14 +74,15 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
     return height;
   };
 
+  // 处理点击事件
   const handleClick = (e: any) => {
     const pos = e.target.getStage().getPointerPosition() as {
       x: number;
       y: number;
     };
-    console.log("handleClick", pos, e);
+    // console.log("handleClick", pos, e);
   };
-
+  // 处理鼠标按下事件
   const handleMouseDown = (e: any) => {
     const pos = e.target.getStage().getPointerPosition() as {
       x: number;
@@ -89,11 +95,14 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
         type: currentTool,
         points: [pos.x, pos.y],
         stroke: "#000",
-        strokeWidth: 1,
+        strokeWidth: 10,
       });
     } else if (currentTool === "rect" || currentTool === "circle") {
+      // 判断有无开始绘制矩形或圆形
       setIsDrawing(true);
+      // 保存起始位置
       setStartPos(pos);
+      // 创建当前形状
       setCurrentShape({
         type: currentTool,
         x: pos.x,
@@ -102,9 +111,9 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
         height: 0,
         fill: fillColor,
         stroke: strokeColor,
+        strokeWidth: strokeWidth,
       });
     }
-
     // else if (currentTool === "eraser") {
     //   // 检测 hit 对象
     //   const intersected = stageRef.current.getIntersection(pos);
@@ -116,7 +125,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
     //   }
     // }
   };
-
+  // 处理鼠标移动事件
   const handleMouseMove = (e: any) => {
     if (!isDrawing) return;
     const pos = e.target.getStage().getPointerPosition();
@@ -149,7 +158,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
       setCurrentShape(newShape);
     }
   };
-
+  // 处理鼠标抬起事件
   const handleMouseUp = () => {
     if (isDrawing && currentShape) {
       if (currentTool === "circle") {
@@ -159,7 +168,6 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
       }
 
       const { type, width, height } = currentShape;
-      console.log("currentShape", currentShape);
       if (
         (type === ETool.RECT && width === 0 && height === 0) ||
         (type === ETool.CIRCLE &&
@@ -177,7 +185,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
     setIsDrawing(false);
     setStartPos(null);
   };
-
+  // 渲染对象
   const renderObject = (
     obj: IObject,
     key: string | number,
@@ -209,7 +217,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
           strokeWidth={obj.strokeWidth}
           tension={0.5}
           lineCap="round"
-          // draggable
+        // draggable
         />
       );
     } else if (obj.type === "rect") {
@@ -222,7 +230,8 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
           height={obj.height}
           fill={obj.fill}
           stroke={obj.stroke}
-          //   draggable
+          strokeWidth={obj.strokeWidth}
+        //   draggable
         />
       );
     } else if (obj.type === "circle") {
@@ -234,7 +243,8 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
           radius={obj.radius}
           fill={obj.fill}
           stroke={obj.stroke}
-          //   draggable
+          strokeWidth={obj.strokeWidth}
+        //   draggable
         />
       );
     }
@@ -266,6 +276,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
             </Layer>
           )}
 
+          {/* 图形绘制 */}
           <Layer>
             {currentFrame?.objects.map((obj, i) => renderObject(obj, i))}
 
