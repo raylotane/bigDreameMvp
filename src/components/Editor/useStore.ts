@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type IObject, type IBaseShape, ETool, type IShape, type IFrame } from "../types";
 import { v4 as uuidv4 } from 'uuid';
 import { useLocalStorageState } from 'ahooks';
@@ -10,6 +10,35 @@ const useStore = () => {
     const [selectTool, setSelectTool] = useLocalStorageState("selectTool", {
         defaultValue: ETool.LINE
     })
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.repeat) return;
+
+            if (
+                e.target instanceof HTMLInputElement ||
+                e.target instanceof HTMLTextAreaElement
+            ) {
+                return;
+            }
+
+            switch (e.code) {
+                case "KeyL":
+                    setSelectTool(ETool.LINE);
+
+                    break;
+                case "KeyF":
+                    setSelectTool(ETool.RECT);
+                    break;
+                case "KeyY":
+                    setSelectTool(ETool.CIRCLE);
+                    break;
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [setSelectTool]);
 
     // const [frames, setFrames] = useState<IFrame[]>([{
     //     id: uuidv4(),
