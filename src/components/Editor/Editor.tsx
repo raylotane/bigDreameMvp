@@ -40,6 +40,8 @@ const Editor: React.FC = () => {
     setFillColor,
     strokeColor,
     setStrokeColor,
+    strokeWidth,
+    setStrokeWidth,
 
     onionSkin,
     setOnionSkin,
@@ -80,6 +82,8 @@ const Editor: React.FC = () => {
         setFillColor={setFillColor}
         strokeColor={strokeColor}
         setStrokeColor={setStrokeColor}
+        strokeWidth={strokeWidth}
+        setStrokeWidth={setStrokeWidth}
         onionSkin={onionSkin}
         setOnionSkin={setOnionSkin}
         setIsPlaying={setIsPlaying}
@@ -106,6 +110,8 @@ const Editor: React.FC = () => {
             addObject={addObject}
             fillColor={fillColor}
             strokeColor={strokeColor}
+            strokeWidth={strokeWidth}
+            setStrokeWidth={setStrokeWidth}
             onionSkin={onionSkin}
             setOnionSkin={setOnionSkin}
             selectedObject={selectedObject}

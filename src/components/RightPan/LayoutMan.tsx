@@ -34,7 +34,7 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
     deleteObject,
     currentFrameIndex,
   } = props;
-  
+
   const handleObjectClick = (object: IObject) => {
     setSelectedObject?.(object);
   };
@@ -84,18 +84,18 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
 
           {selectedObject.type === "line" && (
             <>
-            <Flex>
-            <Form.Item label="线条宽度">
-                <InputNumber
-                style={{ width: "90%" }}
-                  value={selectedObject.strokeWidth || 1}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      strokeWidth: value || 1,
-                    });
-                  }}
-                />
-              </Form.Item>
+              <Flex>
+                <Form.Item label="线条宽度">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.strokeWidth || 1}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        strokeWidth: value || 1,
+                      });
+                    }}
+                  />
+                </Form.Item>
 
               <Form.Item label="线条样式"> 
                 <Select
@@ -125,7 +125,6 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   }}
                 />
               </Form.Item>
-              
             </>
           )}
 
@@ -155,84 +154,92 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
                   />
                 </Form.Item>
               </Flex>
-              <Flex> 
-              
-              <Form.Item label="宽度">
-                <InputNumber
-                  style={{ width: "90%" }}
-                  value={selectedObject.width || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      width: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="高度">
-                <InputNumber
-                  style={{ width: "90%" }}
-                  value={selectedObject.height || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      height: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
+              <Flex>
+                <Form.Item label="宽度">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.width || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        width: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="高度">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.height || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        height: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
               </Flex>
 
               <Flex>
-              <Form.Item label="填充颜色">
-                <ColorPicker
-                  value={selectedObject.fill || "transparent"}
-                  onChange={(color) => {
-                    handleUpdateObject(selectedObject.id, {
-                      fill: color.toHexString(),
-                    });
-                  }}
-                />
-              </Form.Item>
-              
-              <Form.Item label="边框颜色">
-                <ColorPicker
-                  value={selectedObject.stroke || "#000"}
-                  onChange={(color) => {
-                    handleUpdateObject(selectedObject.id, {
-                      stroke: color.toHexString(),
-                    });
-                  }}
-                />
-              </Form.Item>
+                <Form.Item label="填充颜色">
+                  <ColorPicker
+                    value={selectedObject.fill || "transparent"}
+                    onChange={(color) => {
+                      handleUpdateObject(selectedObject.id, {
+                        fill: color.toHexString(),
+                      });
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item label="边框颜色">
+                  <ColorPicker
+                    value={selectedObject.stroke || "#000"}
+                    onChange={(color) => {
+                      handleUpdateObject(selectedObject.id, {
+                        stroke: color.toHexString(),
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="边框宽度">
+                  <InputNumber
+                    value={selectedObject.strokeWidth || 1}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        strokeWidth: value || 1,
+                      });
+                    }}
+                  />
+                </Form.Item>
               </Flex>
-              
             </>
           )}
 
           {selectedObject.type === "circle" && (
             <>
-            <Flex> 
-              <Form.Item label="X坐标（圆心）">
-                <InputNumber
-                  style={{ width: "90%" }}
-                  value={selectedObject.x || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      x: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="Y坐标（圆心）">
-                <InputNumber
-                  style={{ width: "90%" }}
-                  value={selectedObject.y || 0}
-                  onChange={(value) => {
-                    handleUpdateObject(selectedObject.id, {
-                      y: value || 0,
-                    });
-                  }}
-                />
-              </Form.Item>
+              <Flex>
+                <Form.Item label="X坐标（圆心）">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.x || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        x: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="Y坐标（圆心）">
+                  <InputNumber
+                    style={{ width: "90%" }}
+                    value={selectedObject.y || 0}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        y: value || 0,
+                      });
+                    }}
+                  />
+                </Form.Item>
               </Flex>
 
               <Form.Item label="半径">
@@ -248,41 +255,49 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
               </Form.Item>
 
               <Flex>
-              <Form.Item label="填充颜色">
-                <ColorPicker
-                  value={selectedObject.fill || "transparent"}
-                  onChange={(color) => {
-                    handleUpdateObject(selectedObject.id, {
-                      fill: color.toHexString(),
-                    });
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="边框颜色">
-                <ColorPicker
-                  value={selectedObject.stroke || "#000"}
-                  onChange={(color) => {
-                    handleUpdateObject(selectedObject.id, {
-                      stroke: color.toHexString(),
-                    });
-                  }}
-                />
-              </Form.Item>
-            </Flex>
+                <Form.Item label="填充颜色">
+                  <ColorPicker
+                    value={selectedObject.fill || "transparent"}
+                    onChange={(color) => {
+                      handleUpdateObject(selectedObject.id, {
+                        fill: color.toHexString(),
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="边框颜色">
+                  <ColorPicker
+                    value={selectedObject.stroke || "#000"}
+                    onChange={(color) => {
+                      handleUpdateObject(selectedObject.id, {
+                        stroke: color.toHexString(),
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label="边框宽度">
+                  <InputNumber
+                    value={selectedObject.strokeWidth || 1}
+                    onChange={(value) => {
+                      handleUpdateObject(selectedObject.id, {
+                        strokeWidth: value || 1,
+                      });
+                    }}
+                  />
+                </Form.Item>
+              </Flex>
             </>
           )}
 
-          <Divider/>
-          <Space style={{width: "100%",justifyContent: "space-between"}}>
-            <Button onClick={handleBackToList} >返回对象列表</Button>
+          <Divider />
+          <Space style={{ width: "100%", justifyContent: "space-between" }}>
+            <Button onClick={handleBackToList}>返回对象列表</Button>
             <Button
               danger
               onClick={() => handleDeleteObject(selectedObject.id)}
-              
             >
               删除图形
             </Button>
-
           </Space>
         </Form>
       </div>

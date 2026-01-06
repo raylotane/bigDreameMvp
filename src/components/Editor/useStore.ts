@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type IObject, type IBaseShape, ETool, type IShape, type IFrame } from "../types";
 import { v4 as uuidv4 } from 'uuid';
 import { useLocalStorageState } from 'ahooks';
@@ -10,6 +10,35 @@ const useStore = () => {
     const [selectTool, setSelectTool] = useLocalStorageState("selectTool", {
         defaultValue: ETool.LINE
     })
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.repeat) return;
+
+            if (
+                e.target instanceof HTMLInputElement ||
+                e.target instanceof HTMLTextAreaElement
+            ) {
+                return;
+            }
+
+            switch (e.code) {
+                case "KeyL":
+                    setSelectTool(ETool.LINE);
+
+                    break;
+                case "KeyF":
+                    setSelectTool(ETool.RECT);
+                    break;
+                case "KeyY":
+                    setSelectTool(ETool.CIRCLE);
+                    break;
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [setSelectTool]);
 
     // const [frames, setFrames] = useState<IFrame[]>([{
     //     id: uuidv4(),
@@ -25,7 +54,6 @@ const useStore = () => {
             objects: []
         }]
     })
-
     // const [currentFrameIndex, setCurrentFrameIndex] = useState<number>(0);
 
     const [currentFrameIndex, setCurrentFrameIndex] = useLocalStorageState("currentFrameIndex", {
@@ -84,6 +112,10 @@ const useStore = () => {
         defaultValue: "#000"
     })
 
+    const [strokeWidth, setStrokeWidth] = useLocalStorageState("strokeWidth", {
+        defaultValue: 2
+    })
+
     // const [onionSkin, setOnionSkin] = useState(true);
 
     const [onionSkin, setOnionSkin] = useLocalStorageState("onionSkin", {
@@ -99,14 +131,14 @@ const useStore = () => {
     const updateObject = (frameIndex: number, objectId: string, updates: Partial<IObject>) => {
         const frame = frames[frameIndex];
         if (!frame) return;
-        
-        const objectIndex = frame.objects.findIndex(obj => obj.id === objectId); 
+
+        const objectIndex = frame.objects.findIndex(obj => obj.id === objectId);
         if (objectIndex === -1) return;
-        
+
         frame.objects[objectIndex] = { ...frame.objects[objectIndex], ...updates };
 
         setFrames([...frames]);
-        
+
         // 如果更新的是当前选中的对象，同时更新选中状态
         if (selectedObject?.id === objectId) {
             setSelectedObject(frame.objects[objectIndex]);
@@ -117,10 +149,10 @@ const useStore = () => {
     const deleteObject = (frameIndex: number, objectId: string) => {
         const frame = frames[frameIndex];
         if (!frame) return;
-        
+
         frame.objects = frame.objects.filter(obj => obj.id !== objectId);
         setFrames([...frames]);
-        
+
         // 如果删除的是当前选中的对象，清除选中状态
         if (selectedObject?.id === objectId) {
             setSelectedObject(null);
@@ -130,7 +162,7 @@ const useStore = () => {
     // 更新整个帧
     const updateFrame = (frameIndex: number, frame: IFrame) => {
         if (!frames[frameIndex]) return;
-        
+
         frames[frameIndex] = frame;
         setFrames([...frames]);
     }
@@ -159,6 +191,8 @@ const useStore = () => {
         setFillColor,
         strokeColor,
         setStrokeColor,
+        strokeWidth,
+        setStrokeWidth,
 
         onionSkin,
         setOnionSkin,

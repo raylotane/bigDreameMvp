@@ -81,6 +81,9 @@ const CodeEditor: React.FC<ICodeEditor> = (props: ICodeEditor) => {
           if (obj.stroke) {
             code += `\n    stroke="${obj.stroke}"`;
           }
+          if (obj.strokeWidth !== undefined) {
+            code += `\n    strokeWidth={${obj.strokeWidth}}`;
+          }
           if (obj.id) {
             code += `\n    key="${obj.id}"`;
           }
@@ -103,6 +106,9 @@ const CodeEditor: React.FC<ICodeEditor> = (props: ICodeEditor) => {
           }
           if (obj.stroke) {
             code += `\n    stroke="${obj.stroke}"`;
+          }
+          if (obj.strokeWidth !== undefined) {
+            code += `\n    strokeWidth={${obj.strokeWidth}}`;
           }
           if (obj.id) {
             code += `\n    key="${obj.id}"`;
@@ -244,7 +250,6 @@ const CodeEditor: React.FC<ICodeEditor> = (props: ICodeEditor) => {
 
   // 当帧数据变化时更新代码
   useEffect(() => {
-    console.log("currentFrame", currentFrame);
 
     if (currentFrame) {
       const generatedCode = generateCode(currentFrame);
