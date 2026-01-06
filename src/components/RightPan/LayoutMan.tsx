@@ -100,11 +100,15 @@ const LayoutMan: React.FC<LayoutManProps> = (props: LayoutManProps) => {
               <Form.Item label="线条样式"> 
                 <Select
                   style={{ width: "90%" }}
-                  defaultValue={selectedObject.strokeDasharray || "none"}
-                  onChange={handleChange}
+                  defaultValue={selectedObject.dash }
+                  onChange={(value) => {
+                    handleUpdateObject(selectedObject.id, {
+                      dash: value ? [5,5] : null,
+                    });
+                  }}
                   options={[
-                    { value: "none", label: "实线" },
-                    { value: "5,5", label: "虚线" },
+                    { value: null, label: "实线" },
+                    { value: "dash", label: "虚线" },
                   ]}
                 />
               </Form.Item>

@@ -209,6 +209,7 @@ const Canvas: React.FC<CanvasProps> = (props: CanvasProps) => {
           strokeWidth={obj.strokeWidth}
           tension={0.5}
           lineCap="round"
+          dash={obj.dash}
           // draggable
         />
       );

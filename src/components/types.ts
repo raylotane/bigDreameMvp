@@ -70,6 +70,7 @@ export interface IShape extends ILine, IRect, ICircle {
 
 export interface IObject extends IShape {
     id: string
+    dash: number[] | null
 }
 
 
